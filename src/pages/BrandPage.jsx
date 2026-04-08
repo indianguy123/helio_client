@@ -42,13 +42,13 @@ export default function BrandPage() {
   return (
     <Layout>
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold">{brandId}</h2>
-          <button className="rounded bg-blue-600 px-3 py-2 text-sm text-white" onClick={async () => { await post("/api/jobs/start", { brandId }); refetch(); }}>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <h2 className="text-xl font-bold sm:text-2xl">{brandId}</h2>
+          <button className="rounded bg-blue-600 px-3 py-2 text-sm text-white sm:w-auto" onClick={async () => { await post("/api/jobs/start", { brandId }); refetch(); }}>
             Re-analyze
           </button>
         </div>
-        <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <div className="rounded border bg-white p-4">Total conversations: {insight?.summary?.totalConversations || 0}</div>
           <div className="rounded border bg-white p-4">Resolution rate: {Math.round((insight?.summary?.resolutionRate || 0) * 100)}%</div>
           <div className="rounded border bg-white p-4">Avg duration: {Math.round(insight?.summary?.avgDurationSeconds || 0)}s</div>

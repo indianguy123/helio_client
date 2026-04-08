@@ -26,12 +26,12 @@ export default function UploadPage() {
   return (
     <Layout>
       <div className="space-y-4">
-        <div {...getRootProps()} className="rounded-lg border-2 border-dashed bg-white p-10 text-center">
+        <div {...getRootProps()} className="rounded-lg border-2 border-dashed bg-white p-6 text-center sm:p-10">
           <input {...getInputProps()} />
           <p>{isDragActive ? "Drop file here..." : "Drag & drop CSV/JSON, or click to select"}</p>
         </div>
         {error && <p className="text-sm text-red-600">{error}</p>}
-        {result && <pre className="overflow-auto rounded border bg-white p-4 text-xs">{JSON.stringify(result, null, 2)}</pre>}
+        {result && <pre className="max-h-[420px] overflow-auto rounded border bg-white p-4 text-xs">{JSON.stringify(result, null, 2)}</pre>}
       </div>
     </Layout>
   );

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import AuthShell from "../components/shared/AuthShell";
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -20,20 +21,37 @@ export default function LoginPage() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <form onSubmit={onSubmit} className="w-full max-w-sm rounded-lg border bg-white p-6">
-        <h1 className="mb-4 text-xl font-bold">Login</h1>
-        <input className="mb-3 w-full rounded border p-2" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <input className="mb-3 w-full rounded border p-2" placeholder="Password" type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        {error && <p className="mb-3 text-sm text-red-600">{error}</p>}
-        <button className="w-full rounded bg-blue-600 p-2 text-white">Sign in</button>
-        <p className="mt-3 text-center text-sm text-slate-600">
+    <AuthShell
+      title="Welcome back"
+      subtitle="Sign in to access brand insights and AI diagnostics."
+      footer={
+        <p className="mt-4 text-center text-sm text-slate-600">
           New user?{" "}
-          <Link to="/register" className="text-blue-600 underline">
+          <Link to="/register" className="font-medium text-blue-600 hover:text-blue-700">
             Create account
           </Link>
         </p>
+      }
+    >
+      <form onSubmit={onSubmit}>
+        <input
+          className="mb-3 w-full rounded-lg border border-slate-200 px-3 py-2.5 outline-none ring-blue-500/40 transition focus:ring"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+        <input
+          className="mb-3 w-full rounded-lg border border-slate-200 px-3 py-2.5 outline-none ring-blue-500/40 transition focus:ring"
+          placeholder="Password"
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+        {error && <p className="mb-3 rounded-lg bg-red-50 px-3 py-2 text-sm text-red-600">{error}</p>}
+        <button className="w-full rounded-lg bg-blue-600 p-2.5 font-medium text-white transition hover:bg-blue-700">
+          Sign in
+        </button>
       </form>
-    </div>
+    </AuthShell>
   );
 }

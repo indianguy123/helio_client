@@ -29,7 +29,7 @@ export default function ConversationPage() {
 
   return (
     <Layout>
-      <h2 className="mb-4 text-xl font-bold">Session: {sessionId}</h2>
+      <h2 className="mb-4 break-all text-lg font-bold sm:text-xl">Session: {sessionId}</h2>
       <ConversationThread messages={messages} highlightedQuotes={quotes} />
     </Layout>
   );

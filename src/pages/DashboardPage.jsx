@@ -98,11 +98,11 @@ export default function DashboardPage() {
                 <p className="text-sm text-slate-600">
                   Resolution rate: {typeof brand.resolutionRate === "number" ? `${Math.round(brand.resolutionRate * 100)}%` : "-"}
                 </p>
-                <div className="mt-3 flex gap-2">
-                  <button className="rounded bg-blue-600 px-3 py-1 text-sm text-white" onClick={() => startAnalysis(brand.brandId)}>
+                <div className="mt-3 flex flex-col gap-2 sm:flex-row">
+                  <button className="rounded bg-blue-600 px-3 py-2 text-sm text-white" onClick={() => startAnalysis(brand.brandId)}>
                     Analyze now
                   </button>
-                  <Link className="rounded border px-3 py-1 text-sm" to={`/brands/${brand.brandId}`}>
+                  <Link className="rounded border px-3 py-2 text-center text-sm" to={`/brands/${brand.brandId}`}>
                     View insights
                   </Link>
                 </div>
