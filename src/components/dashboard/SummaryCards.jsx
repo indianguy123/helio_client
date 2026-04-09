@@ -1,9 +1,9 @@
-import { BarChart3, Building2, CheckCircle2, AlertTriangle } from "lucide-react";
+import { BarChart3, Building2, AlertTriangle } from "lucide-react";
 
 const cards = [
   { key: "totalBrands", label: "Total Brands", icon: Building2 },
   { key: "totalConversations", label: "Total Conversations", icon: BarChart3 },
-  { key: "avgResolutionRate", label: "Avg Resolution Rate", icon: CheckCircle2 },
+  { key: "avgFrustrationRate", label: "Avg Frustration Rate", icon: AlertTriangle },
   { key: "mostCommonIssue", label: "Most Common Issue", icon: AlertTriangle },
 ];
 

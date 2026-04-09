@@ -15,6 +15,8 @@ export default function DashboardPage() {
   const [issueData, setIssueData] = useState([]);
   const { status, progress } = useJobPoller(jobId);
 
+  const [brandInsights, setBrandInsights] = useState(new Map());
+
   useEffect(() => {
     let mounted = true;
     const loadIssueData = async () => {
@@ -24,9 +26,11 @@ export default function DashboardPage() {
       }
 
       const issueMap = new Map();
+      const insightsMap = new Map();
       for (const brand of brands) {
         try {
           const { data } = await get(`/api/insights/${brand.brandId}`);
+          insightsMap.set(brand.brandId, data);
           const issues = data?.issues || [];
           for (const issue of issues) {
             const key = issue.type || "unknown";
@@ -57,6 +61,7 @@ export default function DashboardPage() {
       if (mounted) {
         const aggregated = [...issueMap.values()].sort((a, b) => b.count - a.count);
         setIssueData(aggregated);
+        setBrandInsights(insightsMap);
       }
     };
 
@@ -69,11 +74,23 @@ export default function DashboardPage() {
   const stats = useMemo(() => {
     const totalBrands = brands.length;
     const totalConversations = brands.reduce((a, b) => a + (b.totalConversations || 0), 0);
-    const rates = brands.map((b) => b.resolutionRate).filter((v) => typeof v === "number");
-    const avgResolutionRate = rates.length ? `${Math.round((rates.reduce((a, b) => a + b, 0) / rates.length) * 100)}%` : "-";
+
+    // Compute average frustration rate across brands
+    let totalFrustrated = 0;
+    let totalConvWithInsights = 0;
+    for (const [, insight] of brandInsights) {
+      const fc = insight?.frustrationSignals?.length || 0;
+      const tc = insight?.summary?.totalConversations || 0;
+      totalFrustrated += fc;
+      totalConvWithInsights += tc;
+    }
+    const avgFrustrationRate = totalConvWithInsights
+      ? `${Math.round((totalFrustrated / totalConvWithInsights) * 100)}%`
+      : "-";
+
     const mostCommonIssue = issueData.length ? issueData[0].type : "-";
-    return { totalBrands, totalConversations, avgResolutionRate, mostCommonIssue };
-  }, [brands, issueData]);
+    return { totalBrands, totalConversations, avgFrustrationRate, mostCommonIssue };
+  }, [brands, issueData, brandInsights]);
 
   const startAnalysis = async (brandId) => {
     const { data } = await post("/api/jobs/start", { brandId });
@@ -96,7 +113,13 @@ export default function DashboardPage() {
                 <h3 className="font-semibold">{brand.displayName}</h3>
                 <p className="text-sm text-slate-600">Conversations: {brand.totalConversations}</p>
                 <p className="text-sm text-slate-600">
-                  Resolution rate: {typeof brand.resolutionRate === "number" ? `${Math.round(brand.resolutionRate * 100)}%` : "-"}
+                  Frustration rate: {(() => {
+                    const insight = brandInsights.get(brand.brandId);
+                    if (!insight) return "-";
+                    const fc = insight.frustrationSignals?.length || 0;
+                    const tc = insight.summary?.totalConversations || 0;
+                    return tc ? `${Math.round((fc / tc) * 100)}%` : "-";
+                  })()}
                 </p>
                 <div className="mt-3 flex flex-col gap-2 sm:flex-row">
                   <button className="rounded bg-blue-600 px-3 py-2 text-sm text-white" onClick={() => startAnalysis(brand.brandId)}>
