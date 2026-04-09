@@ -52,6 +52,27 @@ export default function LoginPage() {
           Sign in
         </button>
       </form>
+
+      {/* Demo Credentials */}
+      <div className="mt-5 rounded-lg border border-dashed border-slate-300 bg-slate-50 px-4 py-3">
+        <p className="mb-1 text-center text-xs font-semibold uppercase tracking-wider text-slate-500">
+          Demo Credentials
+        </p>
+        <div className="mb-2 space-y-0.5 text-center text-sm text-slate-600">
+          <p>Email: <span className="font-mono font-medium text-slate-800">demo@helio.com</span></p>
+          <p>Password: <span className="font-mono font-medium text-slate-800">demo1234</span></p>
+        </div>
+        <button
+          type="button"
+          onClick={() => {
+            setEmail("demo@helio.com");
+            setPassword("demo1234");
+          }}
+          className="w-full rounded-md bg-slate-200 px-3 py-1.5 text-sm font-medium text-slate-700 transition hover:bg-slate-300"
+        >
+          Use Demo Credentials
+        </button>
+      </div>
     </AuthShell>
   );
 }
