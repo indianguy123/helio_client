@@ -6,6 +6,14 @@ export default function InsightCard({ issue }) {
   const [open, setOpen] = useState(false);
   const borderColor = issue.severity === "high" ? "border-red-500" : issue.severity === "medium" ? "border-orange-500" : "border-yellow-400";
 
+  // Build the issue context to pass via router state
+  const issueContext = {
+    type: issue.type,
+    severity: issue.severity,
+    description: issue.description,
+    quotes: issue.quotes || [],
+  };
+
   return (
     <div className={`rounded-lg border-l-4 ${borderColor} border bg-white p-4`}>
       <div className="mb-2 flex items-center gap-2">
@@ -24,7 +32,12 @@ export default function InsightCard({ issue }) {
           ))}
           <div className="flex flex-wrap gap-2">
             {(issue.examples || []).map((sessionId) => (
-              <Link key={sessionId} to={`/conversations/${sessionId}`} className="text-xs text-blue-600 underline">
+              <Link
+                key={sessionId}
+                to={`/conversations/${sessionId}`}
+                state={{ issue: issueContext }}
+                className="text-xs text-blue-600 underline"
+              >
                 {sessionId}
               </Link>
             ))}
