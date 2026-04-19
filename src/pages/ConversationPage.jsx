@@ -120,7 +120,7 @@ export default function ConversationPage() {
           No messages found for this session.
         </div>
       ) : (
-        <ConversationThread messages={messages} highlightedQuotes={quotes} />
+        <ConversationThread messages={messages} highlightedQuotes={quotes} issueContext={issueContext} />
       )}
     </Layout>
   );
